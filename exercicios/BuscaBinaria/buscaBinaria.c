@@ -37,7 +37,36 @@ int main(int argc, char** argv)
 	fim = (tamarq/tamreg) - 1;
 	total = 0;
 	
+    	while(inicio <= fim)
+	{
 
+		meio = (inicio+fim)/2;
+
+		fseek(f,meio*tamreg,SEEK_SET);
+		fread(&e,tamreg,1,f);
+
+		total++;
+
+		cmp = strncmp(argv[1],e.cep,8);
+
+		if(cmp == 0)
+		{
+			printf("CEP encontrado! =)\n\n");
+			printf("%.72s\n%.72s\n%.72s\n%.72s\n%.2s\n%.8s\n\n",e.logradouro,e.bairro,e.cidade,e.uf,e.sigla,e.cep);
+			printf("Total lidos: %d\n", total);
+			fclose(f);
+			return 0;		
+		}
+		else if(cmp > 0){
+			inicio = meio + 1;
+        }
+		else {
+			fim = meio - 1;
+        }
+
+
+	}
+	
 	printf("CEP não encontrado! =(\n");
 	fclose(f);
 	return 1;	
