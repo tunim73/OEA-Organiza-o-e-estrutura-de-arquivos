@@ -4,43 +4,40 @@
 
 #define TAMANHO 256
 
-void preeFor (int *pt){
-	for(int i =0; i<TAMANHO; i++){
-		pt[i]=0;
-	}
-}
-
 
 int main()
 {
 	FILE *entrada, *saida;
 
-	int qtd[TAMANHO];
     int c;
-	preeFor(&qtd);
 
-    entrada = fopen("loremipsum.txt","rb");
+    entrada = fopen("loremipsum copy.txt","rb");
+    saida = fopen("concluido.txt","wb");
 	
 	if(!entrada)
 	{
-		fprintf(stderr,"Arquivo %s não pode ser aberto para leitura\n", "loremipsum.txt");
+		fprintf(stderr,"Arquivo não pode ser aberto para leitura\n");
+		return 1;
+	}
+	if(!saida)
+	{
+		fprintf(stderr,"Arquivo não pode ser aberto para escrita\n");
 		return 1;
 	}
 
-    c = fgetc(entrada);
 
-	while(c != EOF)
+    c = fgetc(entrada);
+	int cont =0;
+	while(c != EOF) 
 	{
-        qtd[c]++;
+		printf("\nc == %i \t cont == %i",c,cont);
+		cont++;		
+        if(c==10){
+			fputc(13,saida);
+		}
+		fputc(c,saida);
 		c = fgetc(entrada);
 	}
-
-
-    for(int i =0; i<TAMANHO; i++){
-		if((i>64 && i<91)|| i>96 && i<123)
-		printf("\n Letra = %c \t quantidade = %i", i, qtd[i]);
-    }
-
 
 	fclose(entrada);
 	return 0;
